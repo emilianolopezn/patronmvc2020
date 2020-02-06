@@ -44,7 +44,7 @@
                             <!-- Aquí van las noticias -->
                             @foreach($noticias as $noticia)
                                 <tr>
-                                    <td>{{$noticia->titulo}}</td>
+                                    <td class="titulo_noticia">{{$noticia->titulo}}</td>
                                     <td>
                                         <form method="POST" 
                                             action="{{route('noticias.destroy',$noticia->id)}}">
@@ -58,8 +58,9 @@
                                             <a href="{{route('noticias.edit',$noticia->id)}}" class="btn btn-primary">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button type="submit" 
-                                                class="btn btn-danger">
+                                            <button type="button" id_noticia="{{$noticia->id}}"
+                                            
+                                                class="btn btn-danger btnEliminar">
                                                 <i class="fas fa-times"></i>
                                             </button>
                                         </form>
@@ -73,9 +74,45 @@
         </div>
     </div>
 </div>
+<!-- Modal Confirmar -->
+<div class="modal fade" id="modalConfirmarEliminar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmar eliminación</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Seguro que deseas eliminar la noticia: <strong><span id="spnNoticia"></span></strong>?
+      </div>
+      <div class="modal-footer">
+        <form action="#" method="POST" id="formEliminar">
+            @csrf
+            @method('DELETE')
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('scripts')
+<script>
+    function doClickEliminar(e) {
+        var titulo = $(this).parent().parent().parent().find(".titulo_noticia").text();
+        var idNoticia = $(this).attr('id_noticia');
+        $("#spnNoticia").text(titulo);
+        $("#formEliminar").attr('action','/admin/noticias/' + idNoticia);
+        $("#modalConfirmarEliminar").modal('show');
+    }
+    $(function() {
+        $(".btnEliminar").click(doClickEliminar);
+    });
+</script>
 @endsection
 
 @section('estilos')

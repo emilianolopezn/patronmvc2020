@@ -7,7 +7,7 @@
 @endsection
 
 @section('contenido')
-<a class="btn btn-primary btn-sm"
+<a class="btn btn-secondary btn-sm"
     style="margin-bottom: 10px;"
     href="{{route('noticias.index')}}">
     <i class="fas fa-arrow-left"></i>
