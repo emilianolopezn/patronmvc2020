@@ -45,6 +45,13 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
+        $verificacion = User::where('email',$request->input('email'))->first();
+        if($verificacion) {
+            return redirect()->
+                route('usuarios.create')->
+                with('error',
+                'El usuario ' . $request->input('email') . ' ya existe');
+        }
         $usuario = new User();
         $usuario->name = 
             $request->input('name');
