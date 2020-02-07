@@ -50,7 +50,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="#" class="brand-link">
   
       <span class="brand-text font-weight-light">Noticias</span>
     </a>
@@ -111,7 +111,30 @@
             </ul>
           </li>
           
-         
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Usuarios
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('usuarios.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Lista</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('usuarios.create')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Nuevo usuario</p>
+                </a>
+              </li>
+           
+            </ul>
+          </li>
          
          
           

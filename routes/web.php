@@ -25,6 +25,9 @@ Route::get('/admin','AdminController@dashboard')->
 Route::resource('/admin/noticias',
     'Admin\NoticiaController');
 
+Route::resource('/admin/usuarios',
+    'Admin\UsuarioController');
+
 
 Auth::routes(['register' => false]);
 

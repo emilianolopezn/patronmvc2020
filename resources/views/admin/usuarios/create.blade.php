@@ -1,0 +1,84 @@
+@extends('layouts.admin')
+
+@section('titulo','Administración | Crear usuario')
+@section('titulo2','Usuarios')
+
+@section('breadcrumbs')
+@endsection
+
+@section('contenido')
+<a class="btn btn-secondary btn-sm"
+    style="margin-bottom: 10px;"
+    href="{{route('usuarios.index')}}">
+    <i class="fas fa-arrow-left"></i>
+    Volver a lista de usuarios</a>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Crear usuarios</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" id="formGuardar"
+                        action="{{route('usuarios.store')}}">
+                        @csrf
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input type="text" 
+                                name="name" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Correo</label>
+                            <input type="text" 
+                                name="email" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="txtPassword"
+                                name="password" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirmar password</label>
+                            <input type="password" id="txtConfirmar"
+                               class="form-control"/>
+                        </div>
+                        <div class="alert alert-danger" id="alertPassword">Las contraseñas no coinciden</div>
+                        <div class="form-group">
+                            <button type="submit" id="btnGuardar"
+                                class="btn btn-primary">Guardar</button>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('scripts')
+<script>
+    function doChangePassword(e) {
+        $("#alertPassword").hide();
+    }
+    function doClickGuardar(e) {
+        e.preventDefault();
+        if($("#txtPassword").val() != null && $("#txtPassword").val() != '' &&
+            $("#txtPassword").val() == $("#txtConfirmar").val()) {
+            $("#formGuardar").submit();
+        } else {
+            $("#alertPassword").show();
+        }
+    }
+    $(function() {
+        $("#btnGuardar").click(doClickGuardar);
+        $("#txtPassword").change(doChangePassword);
+        $("#txtConfirmar").change(doChangePassword);
+        $("#alertPassword").hide();
+    });
+</script>
+@endsection
+
+@section('estilos')
+@endsection
