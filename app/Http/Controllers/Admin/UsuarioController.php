@@ -45,7 +45,11 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        $verificacion = User::where('email',$request->input('email'))->first();
+        $verificacion = 
+            //where(columna,valor)
+            //first encuentra el primer registro que coincida,
+            //si no encuentra regresa NULL
+            User::where('email',$request->input('email'))->first();
         if($verificacion) {
             return redirect()->
                 route('usuarios.create')->

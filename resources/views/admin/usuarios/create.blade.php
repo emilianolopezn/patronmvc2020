@@ -56,8 +56,9 @@
                             <label>Confirmar password</label>
                             <input type="password" id="txtConfirmar"
                                class="form-control"/>
+                            <span class="text-danger" id="alertPassword">Las contraseñas no coinciden</span>
                         </div>
-                        <div class="alert alert-danger" id="alertPassword">Las contraseñas no coinciden</div>
+                        
                         <div class="form-group">
                             <button type="submit" id="btnGuardar"
                                 class="btn btn-primary">Guardar</button>

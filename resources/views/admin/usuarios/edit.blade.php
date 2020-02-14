@@ -34,7 +34,7 @@
                     <h3 class="card-title">Crear usuarios</h3>
                 </div>
                 <div class="card-body">
-                    <form method="POST" 
+                    <form method="POST" id="formGuardar"
                         action="{{route('usuarios.update',$usuario->id)}}">
                         @csrf
                         @method('PUT')
@@ -50,16 +50,17 @@
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="password" 
+                            <input type="password" id="txtPassword"
                                 name="password" class="form-control"/>
                         </div>
                         <div class="form-group">
                             <label>Confirmar password</label>
-                            <input type="password" 
+                            <input type="password" id="txtConfirmar"
                                class="form-control"/>
+                            <span class="text-danger" id="alertPassword">Las contraseñas no coinciden</span>
                         </div>
                         <div class="form-group">
-                            <button type="submit"
+                            <button type="submit" id="btnGuardar"
                                 class="btn btn-primary">Guardar</button>
                         </div>
                     </form>
@@ -71,6 +72,26 @@
 @endsection
 
 @section('scripts')
+<script>
+    function doChangePassword(e) {
+        $("#alertPassword").hide();
+    }
+    function doClickGuardar(e) {
+        e.preventDefault();
+        if(
+            $("#txtPassword").val() == $("#txtConfirmar").val()) {
+            $("#formGuardar").submit();
+        } else {
+            $("#alertPassword").show();
+        }
+    }
+    $(function() {
+        $("#btnGuardar").click(doClickGuardar);
+        $("#txtPassword").change(doChangePassword);
+        $("#txtConfirmar").change(doChangePassword);
+        $("#alertPassword").hide();
+    });
+</script>
 @endsection
 
 @section('estilos')
