@@ -55,7 +55,9 @@ class NoticiaController extends Controller
             $archivoPortada = 
                 $request->file('imgPortada');
             $rutaArchivo =
-                $archivoPortada->store('portadas');
+                $archivoPortada->store('public/portadas');
+            $rutaArchivo =
+                substr($rutaArchivo,16);
             $noticia->portada =
                 $rutaArchivo;
         }
