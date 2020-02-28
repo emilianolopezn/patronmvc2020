@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Storage;
+
 use App\Noticia;
 
 class NoticiaController extends Controller
@@ -130,6 +132,35 @@ class NoticiaController extends Controller
                 $request->input('txtTitulo');
             $noticia->cuerpo =
                 $request->input('txtCuerpo');
+            if ($request->hasFile('imgPortada')) {
+               
+                Storage::delete('public/portadas/' . $noticia->portada);
+
+                $archivoPortada = 
+                    $request->file('imgPortada');
+                //Nombre establecido por Laravel
+                /*$rutaArchivo =
+                    $archivoPortada->store('public/portadas');*/
+                //Nombre establecido por nosotros
+
+                $textoArchivoSeparado = 
+                    explode('.',
+                        $archivoPortada->getClientOriginalName());
+                $extension =
+                    $textoArchivoSeparado[count($textoArchivoSeparado) - 1];
+                
+
+                $rutaArchivo =
+                    Storage::putFileAs('public/portadas',
+                        $archivoPortada,
+                        $noticia->id . time() .
+                       "portada." . $extension);
+                $rutaArchivo =
+                    substr($rutaArchivo,16);
+                $noticia->portada =
+                    $rutaArchivo;
+            }
+
             if ($noticia->save()) {
                 return redirect()->
                     route('noticias.edit',$id)->
