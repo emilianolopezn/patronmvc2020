@@ -21,15 +21,18 @@ class NoticiaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     //http://localhost:8000/admin/noticas?criterio=hola
+     //http://localhost:8000/admin/noticas?criterio=hola&fechaInicio=2020-03-01&fechaFin=2020-03-31
     public function index(Request $request)
     {
         //Verificar si en la solicitud viene un parametro
         //llamado criterio
+        $fechaInicio = $request->input('fechaInicio');
+        $fechaFin = $request->input('fechaFin');
         $criterio = $request->input('criterio');
         $noticias = array();
-        if($criterio) {
-            //Busca noticias por criterio
-            //SELECT * FROM noticias WHERE titulo LIKE '%criterio%'
+        if ($fechaInicio && $fechaFin && $criterio) {
             $noticias = Noticia::leftJoin(
                 'categorias_noticia', //la tabla a unir
                 'categorias_noticia.id', //primer columna a evaluar (id de la table que voy a juntar)
@@ -37,18 +40,38 @@ class NoticiaController extends Controller
                 'noticias.id_categoria' // segunda columna a evaluar (fk con el que se relaciona la tabla)
             )->
                 where('titulo',
-                'LIKE','%'.$criterio.'%')->get();
-
-                //dd($noticias);
+                'LIKE','%'.$criterio.'%')->
+                where('fecha','>=',$fechaInicio)->
+                where('fecha','<=',$fechaFin)->
+                get();
+                //SELECT * FROM noticias WHERE criterio = '%$criterio%'
+                //AND fecha >= '$fechaInicio' AND
+                // fecha <= '$fechaFin' LEFT JOIN....
         } else {
-            //Me trae todas
-            $noticias = Noticia::leftJoin(
-                'categorias_noticia', //la tabla a unir
-                'categorias_noticia.id', //primer columna a evaluar (id de la table que voy a juntar)
-                '=',                   //como lo va a evaluar
-                'noticias.id_categoria' // segunda columna a evaluar (fk con el que se relaciona la tabla)
-            )->get();
+            if($criterio) {
+                //Busca noticias por criterio
+                //SELECT * FROM noticias WHERE titulo LIKE '%criterio%'
+                $noticias = Noticia::leftJoin(
+                    'categorias_noticia', //la tabla a unir
+                    'categorias_noticia.id', //primer columna a evaluar (id de la table que voy a juntar)
+                    '=',                   //como lo va a evaluar
+                    'noticias.id_categoria' // segunda columna a evaluar (fk con el que se relaciona la tabla)
+                )->
+                    where('titulo',
+                    'LIKE','%'.$criterio.'%')->get();
+    
+                    //dd($noticias);
+            } else {
+                //Me trae todas
+                $noticias = Noticia::leftJoin(
+                    'categorias_noticia', //la tabla a unir
+                    'categorias_noticia.id', //primer columna a evaluar (id de la table que voy a juntar)
+                    '=',                   //como lo va a evaluar
+                    'noticias.id_categoria' // segunda columna a evaluar (fk con el que se relaciona la tabla)
+                )->get();
+            }
         }
+        
         
         $argumentos = array();
         $argumentos['noticias'] = $noticias;
