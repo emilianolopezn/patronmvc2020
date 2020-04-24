@@ -21,9 +21,35 @@ class NoticiaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $noticias = Noticia::all();
+        //Verificar si en la solicitud viene un parametro
+        //llamado criterio
+        $criterio = $request->input('criterio');
+        $noticias = array();
+        if($criterio) {
+            //Busca noticias por criterio
+            //SELECT * FROM noticias WHERE titulo LIKE '%criterio%'
+            $noticias = Noticia::leftJoin(
+                'categorias_noticia', //la tabla a unir
+                'categorias_noticia.id', //primer columna a evaluar (id de la table que voy a juntar)
+                '=',                   //como lo va a evaluar
+                'noticias.id_categoria' // segunda columna a evaluar (fk con el que se relaciona la tabla)
+            )->
+                where('titulo',
+                'LIKE','%'.$criterio.'%')->get();
+
+                //dd($noticias);
+        } else {
+            //Me trae todas
+            $noticias = Noticia::leftJoin(
+                'categorias_noticia', //la tabla a unir
+                'categorias_noticia.id', //primer columna a evaluar (id de la table que voy a juntar)
+                '=',                   //como lo va a evaluar
+                'noticias.id_categoria' // segunda columna a evaluar (fk con el que se relaciona la tabla)
+            )->get();
+        }
+        
         $argumentos = array();
         $argumentos['noticias'] = $noticias;
         return view('admin.noticias.index',

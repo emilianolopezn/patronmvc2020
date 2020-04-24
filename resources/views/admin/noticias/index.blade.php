@@ -33,10 +33,27 @@
                     <a href="{{route('noticias.create')}}" class="btn btn-primary">
                         <i class="fas fa-plus"></i>Agregar noticia
                     </a>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form>
+                                <div class="form-group">
+                                    <input class="form-control" 
+                                        type="text" name="criterio" 
+                                        id="txtCriterio" />
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary" type="submit">
+                                        Buscar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                     <table class="table">
                         <thead>
                             <tr>
                                 <th>Noticia</th>
+                                <th>Categoria</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -45,6 +62,7 @@
                             @foreach($noticias as $noticia)
                                 <tr>
                                     <td class="titulo_noticia">{{$noticia->titulo}}</td>
+                                    <td>{{$noticia->descripcion}}</td>
                                     <td>
                                         <form method="POST" 
                                             action="{{route('noticias.destroy',$noticia->id)}}">
